@@ -1,0 +1,9 @@
+{
+    "stocks":
+    [
+        {"no":"600570", "marketvalue":12345.67},
+        {"no":"600576", "marketvalue":12345.67},
+        {"no":"000016", "marketvalue":12345.67},
+        {"no":"000150", "marketvalue":12345.67}
+    ]
+}

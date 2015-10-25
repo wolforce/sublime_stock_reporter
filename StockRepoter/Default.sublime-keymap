@@ -1,0 +1,4 @@
+[
+    { "keys": ["ctrl+alt+keypad8"], "command": "stockrepoter" },
+    { "keys": ["ctrl+alt+keypad9"], "command": "stockrepoterclean" }
+]
