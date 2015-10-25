@@ -19,6 +19,7 @@ class StockrepoterCommand(sublime_plugin.TextCommand):
         stocks   = settings.get("stocks")
         thread   = FetchStocksCall(stocks)
         thread.start()
+        self.edit = edit
         self.handle_thread(thread)
 
     def handle_thread(self, thread):
@@ -30,7 +31,7 @@ class StockrepoterCommand(sublime_plugin.TextCommand):
         for price in thread.priceList:
             outList.append(price.get('name') + " => " + price.get('percent'))
         self.view.set_status(status_key, '        '.join(outList) + '        ')
-        
+
 
 class StockrepotercleanCommand(sublime_plugin.TextCommand):
     def run(self, edit):
@@ -77,19 +78,22 @@ class FetchStocksCall(threading.Thread):
 
     def run(self):
         try:
+            noList = []
             for stock in self.stocks:
-                no       = stock.get('no')
-                request  = urllib2.Request('http://hq.sinajs.cn/list=' + self.get_stock_with_prefix(no))
-                response = urllib2.urlopen(request)
-                result   = response.read().decode('gbk')
-                text     = re.sub('var.+=[^"]*"', '', result)
-                infos    = text.split(',')
+                noList.append(self.get_stock_with_prefix(stock.get('no')))
+            request  = urllib2.Request('http://hq.sinajs.cn/list=' + ','.join(noList))
+            response = urllib2.urlopen(request)
+            result   = response.read().decode('gbk')
+            lines    = result.strip().split('\n')
+            for line in lines:
+                text           = re.sub('var.+=[^"]*"', '', line)
+                infos          = text.split(',')
                 stockName      = self.get_stock_name(infos[0])
                 yesterdayPrice = float(infos[2])
                 curPrice       = float(infos[3])
                 percent        = (curPrice / yesterdayPrice - 1) * 100
                 percentStr     = str('%0.2f'%percent) + "%"
-                self.priceList.append({'no':no, 'name':stockName, 'percent': percentStr})
+                self.priceList.append({'name':stockName, 'percent': percentStr})
             return
         except urllib2.HTTPError:
             err = '%s: HTTP error %s contacting API' % (__name__, str(urllib2.HTTPError.code))
