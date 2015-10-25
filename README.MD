@@ -1,4 +1,4 @@
-Sublime 中国A股涨幅查询插件
+﻿Sublime 中国A股涨幅查询插件
 ========
 
 ##这个插件有什么用？
@@ -17,6 +17,7 @@ Sublime 中国A股涨幅查询插件
         {"no":"000008"}
     ]
 ```
+![配置信息](ScreenShotConfig.png)
 - 重启sublime即可完成安装
 
 ##使用
