@@ -1,4 +1,6 @@
 [
     { "keys": ["ctrl+alt+keypad8"], "command": "stockrepoter" },
-    { "keys": ["ctrl+alt+keypad9"], "command": "stockrepoterclean" }
+    { "keys": ["ctrl+alt+keypad9"], "command": "stockrepoterclean" },
+    { "keys": ["ctrl+alt+8"], "command": "stockrepoter" },
+    { "keys": ["ctrl+alt+9"], "command": "stockrepoterclean" }
 ]
