@@ -50,7 +50,10 @@ class FetchStocksCall(threading.Thread):
         sh = ['001', '110', '120', '129', '100', '201', '310', '500', '510', '550', '6', '700', '710', '701', '711', '720', '730', '735', '737', '900']
         prefix = 'sz'
         for num in sh:
-            if no.startswith(num):
+            if no.startswith('sh') or no.startswith('sz'):
+                prefix = ''
+                break
+            elif no.startswith(num):
                 prefix = 'sh'
                 break
         return prefix + no

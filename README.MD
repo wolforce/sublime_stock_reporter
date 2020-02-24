@@ -7,15 +7,17 @@
 
 ##安装
 - 打开插件目录. 主菜单 -> Preferences -> Browse Packages.
-- 下载本插件，把 StockRepoter 目录复制到上一步打开的sublime的插件目录下
+- 下载本插件，把 StockReporter 目录复制到上一步打开的sublime的插件目录下
 - 打开配置文件. 主菜单 -> Preferences -> Settings - User
 - 配置股票信息.在打开的配置文件里写入stocks列表，格式如下：
+- 插件会自动识别沪市或深市的股票，识别不了的可以手动在号码前加`sz`或`sh`
 ```javascript
 "stocks":
     [
         {"no":"000001"},
         {"no":"000002"},
-        {"no":"000008"}
+        {"no":"sh000008"},
+        {"no":"sz159915"}
     ]
 ```
 ![配置信息](ScreenShotConfig.png)
