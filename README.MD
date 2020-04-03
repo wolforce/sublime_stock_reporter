@@ -11,13 +11,16 @@
 - 打开配置文件. 主菜单 -> Preferences -> Settings - User
 - 配置股票信息.在打开的配置文件里写入stocks列表，格式如下：
 - 插件会自动识别沪市或深市的股票，识别不了的可以手动在号码前加`sz`或`sh`
+- show_pinyin配置可切换是否以拼音显示名称
+- show_price配置可切换是否显示当前价格
 ```javascript
 "stocks":
     [
+        {"show_pinyin":false, "show_price":false},
         {"no":"000001"},
         {"no":"000002"},
-        {"no":"sh000008"},
-        {"no":"sz159915"}
+        {"no":"sz159915"},
+        {"no":"sh000008"}
     ]
 ```
 ![配置信息](ScreenShotConfig.png)

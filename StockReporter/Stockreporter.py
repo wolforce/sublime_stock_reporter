@@ -71,9 +71,9 @@ class FetchStocksCall(threading.Thread):
         return rstring
 
     #因为sublime2不支持在状态栏显示中文，所以在python2下用拼音表示股票名，在python3下直接使用中文.
-    def get_stock_name(self, name):
+    def get_stock_name(self, name, show_pinyin):
         stockName = ""
-        if isPython2:
+        if isPython2 or show_pinyin:
             stockName = Pinyin().get_initials(self.strQ2B(name), u'')
         else:
             stockName = name
@@ -81,9 +81,17 @@ class FetchStocksCall(threading.Thread):
 
     def run(self):
         try:
+            show_pinyin = False
+            show_price = False
             noList = []
             for stock in self.stocks:
-                noList.append(self.get_stock_with_prefix(stock.get('no')))
+                no = stock.get('no')
+                if no:
+                    noList.append(self.get_stock_with_prefix(no))
+                else:
+                    show_pinyin = stock.get('show_pinyin')
+                    show_price = stock.get('show_price')
+
             request  = urllib2.Request('http://hq.sinajs.cn/list=' + ','.join(noList))
             response = urllib2.urlopen(request)
             result   = response.read().decode('gbk')
@@ -91,11 +99,14 @@ class FetchStocksCall(threading.Thread):
             for line in lines:
                 text           = re.sub('var.+=[^"]*"', '', line)
                 infos          = text.split(',')
-                stockName      = self.get_stock_name(infos[0])
+                stockName      = self.get_stock_name(infos[0], show_pinyin)
                 yesterdayPrice = float(infos[2])
                 curPrice       = float(infos[3])
                 percent        = (curPrice / yesterdayPrice - 1) * 100
-                percentStr     = str('%0.2f'%percent) + "%"
+                if show_price:
+                    percentStr = str(curPrice) + "(" + str('%0.2f'%percent) + '%)'
+                else:
+                    percentStr = str('%0.2f'%percent) + '%'
                 self.priceList.append({'name':stockName, 'percent': percentStr})
             return
         except urllib2.HTTPError:
