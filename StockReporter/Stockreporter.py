@@ -92,7 +92,7 @@ class FetchStocksCall(threading.Thread):
                     show_pinyin = stock.get('show_pinyin')
                     show_price = stock.get('show_price')
 
-            request  = urllib2.Request('http://hq.sinajs.cn/list=' + ','.join(noList))
+            request  = urllib2.Request('http://hq.sinajs.cn/list=' + ','.join(noList), headers={'Referer': 'https://finance.sina.com.cn'})
             response = urllib2.urlopen(request)
             result   = response.read().decode('gbk')
             lines    = result.strip().split('\n')
